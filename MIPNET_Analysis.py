@@ -106,6 +106,5 @@ def main(MIPNET_OUT, TAR, MONO):
 
 
     
-main("/Volumes/MIP_DESIGN/2-18-2023/batch1-DOP/DOP-MAA",
-"DOP", "MAA")
+main("/Volumes/MIP_DESIGN/2-18-2023/batch1-DOP/DOP-MAA","DOP", "MAA")
 
