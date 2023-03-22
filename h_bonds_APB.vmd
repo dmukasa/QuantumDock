@@ -1,0 +1,16 @@
+#Load the molecule
+mol new $::env(Confomer_name).pdb type pdb | tclsh
+
+#Load the hbonds package
+package require hbonds
+
+#Make the .dat file to show the number of hbonds
+#dist and ang are set for APB
+hbonds -sel1 [atomselect top protein] -sel2 [atomselect top protein] -dist 2.3 -ang 77.0 -plot no -writefile yes
+#hbonds -sel1 [atomselect top protein] -sel2 [atomselect top protein] -dist 2.3 -ang 77.4 -plot no -writefile yes
+
+#exit VMD
+exit
+
+#The file will be saved as hbonds.dat. The number of bonds is the second number open this and see if the number is >0
+

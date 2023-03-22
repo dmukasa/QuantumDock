@@ -1,0 +1,30 @@
+#Load the molecule
+mol new $::env(Confomer_name).pdb type pdb | tclsh
+
+#Load the hbonds package
+package require hbonds
+
+#Make the .dat file to show the number of hbonds
+
+#play around with these cutoff settings
+#Self interactions happen with PHE at 2.4 A
+#Higher ang is less rigerous seemingly
+#ang = 109 dist = 2.3 gives a 80% hit rate on 5 configs! 982 seconds to run
+#ang = 110 dist = 2.3 gives a 40-70% (60% AVG) hit rate on 10 configs: 107-200 seconds to run
+#ang = 110 dist = 2.2 NO CONVERGENCE 
+#ang = 170 dist = 2.2 NO CONVERGENCE STILL
+#FOR ALL ELSE
+#2VP,4AM,12E,24D,ACA,ACM,DED,ITA,MAA,OPD,PHN,PYR,TAA,VIN
+hbonds -sel1 [atomselect top protein] -sel2 [atomselect top protein] -dist 2.3 -ang 109 -plot no -writefile yes
+#4VP,AVB,PAA
+#hbonds -sel1 [atomselect top protein] -sel2 [atomselect top protein] -dist 2.3 -ang 108 -plot no -writefile yes
+#2AM
+#hbonds -sel1 [atomselect top protein] -sel2 [atomselect top protein] -dist 2.2 -ang 179 -plot no -writefile yes
+#APB
+#hbonds -sel1 [atomselect top protein] -sel2 [atomselect top protein] -dist 2.3 -ang 77.4 -plot no -writefile yes
+
+#exit VMD
+exit
+
+#The file will be saved as hbonds.dat. The number of bonds is the second number open this and see if the number is >0
+
