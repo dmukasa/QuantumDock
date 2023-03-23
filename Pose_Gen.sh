@@ -5,14 +5,17 @@ Molecule_1_name="PHE"
 Molecule_2_name="PYR"
 ############################################################IMPLIED VARIABLES#######################################################
 cwd=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
 Confomer_name=${Molecule_1_name}_${Molecule_2_name}
 Molecule_1_PATH=${cwd}"/Molecular_Database/Targets/"${Molecule_1_name}/${Molecule_1_name}.pdb
-Molecule_2_PATH=${cwd}"/Molecular_Database/Monomers/"${Molecule_2_name}/${Molecule_2_name}.pdb
+if [[ ${Molecule_1_name} == "TRP" && ${Molecule_2_name} == "MAA" ]]
+    then
+        Molecule_2_PATH=${cwd}"/Molecular_Database/tmp/"${Molecule_2_name}/${Molecule_2_name}.pdb
+    else
+        Molecule_2_PATH=${cwd}"/Molecular_Database/Monomers/"${Molecule_2_name}/${Molecule_2_name}.pdb
+fi
 mkdir ${cwd}/${Molecule_1_name}-${Molecule_2_name}
 MIPNET_PATH=${cwd}"/${Molecule_1_name}-${Molecule_2_name}"
 check_h_bond_2AM=${cwd}"/h_bonds_2AM.vmd"
-check_h_bond_TRP_MAA=${cwd}"/h_bond_TRP_MAA.vmd"
 check_h_bond_APB=${cwd}"/h_bonds_APB.vmd"
 check_h_bond_General=${cwd}"/h_bonds_General.vmd"
 check_h_bond_Strict=${cwd}"/h_bonds_Strict.vmd"
@@ -26,8 +29,7 @@ start=`date +%s`
 cd $MIPNET_PATH
 pwd
 
-#for i in {1..100}
-for i in {1..1}
+for i in {1..100}
     do
     mkdir ${Confomer_name}_${i}
 done
@@ -86,7 +88,7 @@ wait
 #Find the 20 most stable conformations (20 lowest energies) Delete all the rest of the files
 cd $MIPNET_PATH
 
-python3 ${cwd}/Pose_Gen_Analysis.py ${MIPNET_PATH} ${Molecule_1_name} ${Molecule_2_name}
+python3 /Volumes/MIP_DESIGN/Pose_Generation/Pose_Gen_Analysis.py ${MIPNET_PATH} ${Molecule_1_name} ${Molecule_2_name}
 
 cd $MIPNET_PATH
 
@@ -146,7 +148,7 @@ done
 
 #DELETE ARCHIVE UNLESS MAKING FIGURE 2B,C
 cd $MIPNET_PATH
-rm -r Archive 
+rm -r Archive
 
 
 #Make a directory for the Monomer
@@ -157,7 +159,7 @@ cd $MIPNET_PATH/Monomer
 mkdir ${Molecule_2_name}
 
 cd $MIPNET_PATH/Monomer/${Molecule_2_name}
-cp ${cwd}/Molecular_Database/Monomers/${Molecule_2_name}/${Molecule_2_name}.pdb .
+cp /Volumes/MIP_DESIGN/Pose_Generation/Molecular_Database/Monomers/${Molecule_2_name}/${Molecule_2_name}.pdb .
 #convert the pdb to xyz
 obabel ${Molecule_2_name}.pdb -O ${Molecule_2_name}.xyz
 rm ${Molecule_2_name}.pdb
@@ -170,25 +172,14 @@ mkdir Target
 cd $MIPNET_PATH/Target
 mkdir ${Molecule_1_name}
 
-
-if [[ ${Molecule_1_name} == "TRP" || ${Molecule_2_name} == "MAA" ]]
-    then
-        cd $MIPNET_PATH/Target/${Molecule_1_name}
-        cp ${cwd}/Molecular_Database/tmp/${Molecule_1_name}/${Molecule_1_name}.pdb .
-        #convert the pdb to xyz
-        obabel ${Molecule_1_name}.pdb -O ${Molecule_1_name}.xyz
-        rm ${Molecule_1_name}.pdb
-    else
-        cd $MIPNET_PATH/Target/${Molecule_1_name}
-        cp ${cwd}/Molecular_Database/Target/${Molecule_1_name}/${Molecule_1_name}.pdb .
-        #convert the pdb to xyz
-        obabel ${Molecule_1_name}.pdb -O ${Molecule_1_name}.xyz
-        rm ${Molecule_1_name}.pdb
-fi
+cd $MIPNET_PATH/Target/${Molecule_1_name}
+cp /Volumes/MIP_DESIGN/Pose_Generation/Molecular_Database/Targets/${Molecule_1_name}/${Molecule_1_name}.pdb .
+#convert the pdb to xyz
+obabel ${Molecule_1_name}.pdb -O ${Molecule_1_name}.xyz
+rm ${Molecule_1_name}.pdb
 
 #################
 end=`date +%s`
 runtime=$((end-start))
 echo "Elapsed Time: ${runtime} seconds"
 #################
-
