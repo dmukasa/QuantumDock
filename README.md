@@ -1,2 +1,2 @@
 # QuantumDock
-Code for the QuantumDock publication. This python wrapper can be utilized to generate stable dimers between two molecules of ones choice.
+Code for the QuantumDock publication. This python wrapper can be utilized to generate stable dimers between two molecules of ones choice. Use of this package requires Orca is installed. For quick use it should be installed in the QuantumDock directory with the path QuantumDock/ORCA/Orca421/. The only reuired files in this directory are "orca_ndoint" "orca_scf" "orca_util" and "orca" from the orca software package. ORCA downloads can be found here https://orcaforum.kofo.mpg.de/app.php/dlext/?cat=10
