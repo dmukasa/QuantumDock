@@ -47,4 +47,5 @@ python3 ${cwd}/Make_Semi_inp.py ${FILENAME} ${functional} ${WD}
 cd ${OUT_PATH}
 #PATH/TO/ORCA ${OUT_PATH}/${FILENAME}.inp > ${OUT_PATH}/${FILENAME}.out
 #/Users/danielmukasa/ORCA/Orca421/orca ${OUT_PATH}/${FILENAME}.inp > ${OUT_PATH}/${FILENAME}.out
-/Users/danielmukasa/Desktop/Pub_Repo/ORCA/Orca421/orca ${OUT_PATH}/${FILENAME}.inp > ${OUT_PATH}/${FILENAME}.out
+#/Users/danielmukasa/Desktop/Pub_Repo/ORCA/Orca421/orca ${OUT_PATH}/${FILENAME}.inp > ${OUT_PATH}/${FILENAME}.out
+${cwd}/ORCA/Orca421/orca ${OUT_PATH}/${FILENAME}.inp > ${OUT_PATH}/${FILENAME}.out
