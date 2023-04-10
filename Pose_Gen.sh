@@ -88,7 +88,7 @@ wait
 #Find the 20 most stable conformations (20 lowest energies) Delete all the rest of the files
 cd $MIPNET_PATH
 
-python3 /Volumes/MIP_DESIGN/Pose_Generation/Pose_Gen_Analysis.py ${MIPNET_PATH} ${Molecule_1_name} ${Molecule_2_name}
+python3 ${cwd}/Pose_Gen_Analysis.py ${MIPNET_PATH} ${Molecule_1_name} ${Molecule_2_name}
 
 cd $MIPNET_PATH
 
@@ -159,7 +159,7 @@ cd $MIPNET_PATH/Monomer
 mkdir ${Molecule_2_name}
 
 cd $MIPNET_PATH/Monomer/${Molecule_2_name}
-cp /Volumes/MIP_DESIGN/Pose_Generation/Molecular_Database/Monomers/${Molecule_2_name}/${Molecule_2_name}.pdb .
+cp ${cwd}/Molecular_Database/Monomers/${Molecule_2_name}/${Molecule_2_name}.pdb .
 #convert the pdb to xyz
 obabel ${Molecule_2_name}.pdb -O ${Molecule_2_name}.xyz
 rm ${Molecule_2_name}.pdb
@@ -173,7 +173,7 @@ cd $MIPNET_PATH/Target
 mkdir ${Molecule_1_name}
 
 cd $MIPNET_PATH/Target/${Molecule_1_name}
-cp /Volumes/MIP_DESIGN/Pose_Generation/Molecular_Database/Targets/${Molecule_1_name}/${Molecule_1_name}.pdb .
+cp ${cwd}/Molecular_Database/Targets/${Molecule_1_name}/${Molecule_1_name}.pdb .
 #convert the pdb to xyz
 obabel ${Molecule_1_name}.pdb -O ${Molecule_1_name}.xyz
 rm ${Molecule_1_name}.pdb
