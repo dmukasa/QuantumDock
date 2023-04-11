@@ -1,10 +1,13 @@
 #!/usr/bin/python3
-
 ###########################################################VARIABLES################################################################
 Molecule_1_name="PHE"
 Molecule_2_name="PYR"
 ############################################################IMPLIED VARIABLES#######################################################
 cwd=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+TRASH_PATH=${cwd}/TRASH
+if [ ! -d $TRASH_PATH ]; then
+    mkdir $TRASH_PATH
+fi
 Confomer_name=${Molecule_1_name}_${Molecule_2_name}
 Molecule_1_PATH=${cwd}"/Molecular_Database/Targets/"${Molecule_1_name}/${Molecule_1_name}.pdb
 if [[ ${Molecule_1_name} == "TRP" && ${Molecule_2_name} == "MAA" ]]
@@ -13,7 +16,18 @@ if [[ ${Molecule_1_name} == "TRP" && ${Molecule_2_name} == "MAA" ]]
     else
         Molecule_2_PATH=${cwd}"/Molecular_Database/Monomers/"${Molecule_2_name}/${Molecule_2_name}.pdb
 fi
-mkdir ${cwd}/${Molecule_1_name}-${Molecule_2_name}
+if [ ! -d ${cwd}/${Molecule_1_name}-${Molecule_2_name} ]; then
+    mkdir ${cwd}/${Molecule_1_name}-${Molecule_2_name}
+else
+    while true; do
+        read -p "This Molecular system is already prepped, would you like to overwrite it? [y/n]" yn
+        case $yn in
+            [Yy]* ) cd ${cwd}; mv ${Molecule_1_name}-${Molecule_2_name} $TRASH_PATH; mkdir ${Molecule_1_name}-${Molecule_2_name}; break;;
+            [Nn]* ) echo "Quitting program"; exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+fi
 MIPNET_PATH=${cwd}"/${Molecule_1_name}-${Molecule_2_name}"
 check_h_bond_2AM=${cwd}"/h_bonds_2AM.vmd"
 check_h_bond_APB=${cwd}"/h_bonds_APB.vmd"
@@ -48,12 +62,12 @@ start=`date +%s`
 
 #Make all the directories
 cd $MIPNET_PATH
-pwd
 
 for i in {1..100}
     do
     mkdir ${Confomer_name}_${i}
 done
+
 
 #Make confomer files and run a PM3 geometric optimization as a first guess 
 #Use vmd to confirm the conformations have h bonds in them 
@@ -100,7 +114,7 @@ for file in *
     
     #If h_bonds==0 or 1 or 2 then delete the contents of the current directory and start the loop again
     export h_bonds Molecule_1_PATH Molecule_2_PATH OUT_PATH Molecule_1_name Molecule_2_name Confomer_name check_h_bond_2AM check_h_bond_APB check_h_bond_Strict check_h_bond_General FILENAME cwd
-    sh ${cwd}/while_loop.sh &
+    #sh ${cwd}/while_loop.sh &
 done    
 
 #Wait for all the conformations to be generated prior to proceeding
@@ -127,7 +141,8 @@ done
 for file in *
     do
     cd ${file}
-    find . -type f -not -name ${Molecule_1_name}_${Molecule_2_name}.xyz -print0 | xargs -0 rm --
+#    find . -type f -not -name ${Molecule_1_name}_${Molecule_2_name}.xyz -print0 | xargs -0 rm --
+    find . -type f -not -name ${Molecule_1_name}_${Molecule_2_name}.xyz -print0 | xargs -0 mv $TRASH_PATH --
     cd ..
 done
 
@@ -150,7 +165,8 @@ cd Archive
 for file in *
     do
     cd ${file}
-    find . -type f -not -name ${Molecule_1_name}_${Molecule_2_name}.xyz -print0 | xargs -0 rm --
+#    find . -type f -not -name ${Molecule_1_name}_${Molecule_2_name}.xyz -print0 | xargs -0 rm --
+    find . -type f -not -name ${Molecule_1_name}_${Molecule_2_name}.xyz -print0 | xargs -0 mv $TRASH_PATH --
     cd ..
 done
 
@@ -169,8 +185,8 @@ done
 
 #DELETE ARCHIVE UNLESS MAKING FIGURE 2B,C
 cd $MIPNET_PATH
-rm -r Archive
-
+#rm -r Archive
+mv Archive $TRASH_PATH
 
 #Make a directory for the Monomer
 cd $MIPNET_PATH
@@ -183,8 +199,8 @@ cd $MIPNET_PATH/Monomer/${Molecule_2_name}
 cp ${cwd}/Molecular_Database/Monomers/${Molecule_2_name}/${Molecule_2_name}.pdb .
 #convert the pdb to xyz
 obabel ${Molecule_2_name}.pdb -O ${Molecule_2_name}.xyz
-rm ${Molecule_2_name}.pdb
-
+#rm ${Molecule_2_name}.pdb
+mv ${Molecule_2_name}.pdb $TRASH_PATH
 
 #And repeat for the Target
 cd $MIPNET_PATH
@@ -197,7 +213,8 @@ cd $MIPNET_PATH/Target/${Molecule_1_name}
 cp ${cwd}/Molecular_Database/Targets/${Molecule_1_name}/${Molecule_1_name}.pdb .
 #convert the pdb to xyz
 obabel ${Molecule_1_name}.pdb -O ${Molecule_1_name}.xyz
-rm ${Molecule_1_name}.pdb
+#rm ${Molecule_1_name}.pdb
+mv ${Molecule_1_name}.pdb $TRASH_PATH
 
 #################
 end=`date +%s`
