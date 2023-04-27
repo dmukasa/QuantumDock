@@ -4,3 +4,14 @@ Code for the QuantumDock publication, compatible with a zsh shell. This python w
 The exact versions used for this publication can be found under this publicly availible dropbox https://www.dropbox.com/scl/fo/kq35tlwc9qdjorpsm1z82/h?dl=0&rlkey=6in0iddgeb0o4ljyur5otkux6
 
 New conformations can be made by following editing the Pose_Gen.sh file and modifying the variables "Molecule_1_name" and "Molecule_2_name" to and of the Targets or Monomers in the Molecular_Database path.
+
+NOTE: The following packages must be installed (you can use pip, homebrew, or your package manager of choice)
+1. obabel
+2. matplotlib
+3. os
+4. sys
+5. re
+6. numpy
+7. subprocess
+8. scipy
+9. operator
